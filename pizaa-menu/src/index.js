@@ -47,7 +47,7 @@ const pizzaData = [
   },
 ];
 
-function App() {
+const App = () => {
   return (
     <div className="container">
       <Header />
@@ -55,7 +55,7 @@ function App() {
       <Footer />
     </div>
   );
-}
+};
 
 const Header = () => {
   return (
@@ -69,38 +69,26 @@ const Menu = () => {
   return (
     <main className="menu">
       <h2>Our Menu</h2>
-      <div className="pizzas">
-        {pizzaData.map((pizza) => (
-          <Pizza item={pizza} />
+      <ul className="pizzas">
+        {pizzaData.map((pizza, index) => (
+          <Pizza key={index} pizza={pizza} />
         ))}
-      </div>
-      {/* <Pizza
-        name="Pizza Salamino"
-        ingredients="Tomato, mozarella, and pepperoni"
-        photoName="pizzas/salamino.jpg"
-        price={10}
-      />
-      <Pizza
-        name="Pizza Prosciutto"
-        ingredients="Tomato, mozarella, ham, aragula, and burrata cheese"
-        price={18}
-        photoName="pizzas/prosciutto.jpg"
-      /> */}
+      </ul>
     </main>
   );
 };
 
 const Pizza = (props) => {
-  console.log(props);
+  // if (props.pizza.soldOut) return null;
   return (
-    <div className="pizza">
-      <img src={props.item.photoName} alt="" />
+    <li className={`pizza ${props.pizza.soldOut ? "sold-out" : ""}`}>
+      <img src={props.pizza.photoName} alt="" />
       <div>
-        <h3>{props.item.name}</h3>
-        <p>{props.item.ingredients}</p>
-        <span>{+props.item.price + 3}</span>
+        <h3>{props.pizza.name}</h3>
+        <p>{props.pizza.ingredients}</p>
+        <span>{props.pizza.soldOut ? "SOLD OUT" : props.pizza.price}</span>
       </div>
-    </div>
+    </li>
   );
 };
 
@@ -112,7 +100,14 @@ const Footer = () => {
   console.log(isOpen);
   return (
     <footer className="footer">
-      {new Date().toLocaleTimeString()} We're currently open!
+      {isOpen ? (
+        <div className="order">
+          <p>We're open until {closeHour}:00</p>
+          <button className="btn">Order Now</button>
+        </div>
+      ) : (
+        <p>The store is closed now</p>
+      )}
     </footer>
   );
 };
