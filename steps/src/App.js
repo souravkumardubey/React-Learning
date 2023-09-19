@@ -20,7 +20,7 @@ const App = () => {
     setIsOpen(!isOpen);
   };
   return (
-    <div>
+    <>
       <button className="close" onClick={handleIsOpen}>
         &times;
       </button>
@@ -58,7 +58,7 @@ const App = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
