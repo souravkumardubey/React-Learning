@@ -11,12 +11,15 @@ const App = () => {
   const handleAddItems = (item) => {
     setItems([...items, item]);
   };
+  const handleDeleteItem = (id) => {
+    setItems((items) => items.filter((item) => item.id !== id));
+  };
   return (
     <div className="app">
       <Logo />
       <Form onAddItems={handleAddItems} />
-      <PackingList items={items} />
-      <Stats />
+      <PackingList items={items} onDeleteItem={handleDeleteItem} />
+      <Stats len={items.length} />
     </div>
   );
 };
@@ -65,33 +68,35 @@ const Form = ({ onAddItems }) => {
   );
 };
 
-const Item = ({ item }) => {
+const Item = ({ item, onDeleteItem }) => {
   return (
     <li key={item.id}>
       <span style={item.packed ? { textDecoration: "line-through" } : {}}>
         {item.quantity} {item.description}
       </span>
-      <button>❌</button>
+      <button onClick={() => onDeleteItem(item.id)}>❌</button>
     </li>
   );
 };
 
-const PackingList = ({ items }) => {
+const PackingList = ({ items, onDeleteItem }) => {
   return (
     <div className="list">
       <ul>
         {items.map((item) => {
-          return <Item item={item} key={item.id} />;
+          return <Item item={item} key={item.id} onDeleteItem={onDeleteItem} />;
         })}
       </ul>
     </div>
   );
 };
 
-const Stats = () => {
+const Stats = ({ len }) => {
   return (
     <footer className="stats">
-      <em>🎒 You have X items on your list and you have packed Y (X%total)</em>
+      <em>
+        🎒 You have {len} items on your list and you have packed Y (X%total)
+      </em>
     </footer>
   );
 };
